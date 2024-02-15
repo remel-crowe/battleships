@@ -7,4 +7,4 @@ function game() {
   player1.randomships();
 }
 
-game();
+module.exports = game;
