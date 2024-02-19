@@ -245,7 +245,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "webpack --config=Scripts/config/webpack.prod.js",
+    "build": "webpack --config=Scripts/config/webpack.prod.js"
   },
   "keywords": [],
   "author": "",
