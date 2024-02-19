@@ -24,7 +24,7 @@ button{
     background-color: #fff;
     transition: background-color 0.2s ease-in-out;
 }
-#start-btn:hover, #reset:hover{ 
+#start-btn:hover, #reset:hover{
     background-color: #000000;
     color: #fff;
     border: 1px solid white;
