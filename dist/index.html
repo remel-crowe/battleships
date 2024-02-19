@@ -3,18 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <title>Battleship</title>
+<script defer src="bundle.js"></script></head>
 <body>
-    <nav>
-        <h1>BATTLESHIPS</h1>
-    </nav>
-    <div class="main-container">
-        <div class="game-area">
-            <div class="player-area"></div>
-            <div class="ai-area"></div>
+    <h1>BATTLESHIPS</h1>
+    <div class="flex-container">
+        <div class="container">
+            <h1>Enemy Waters</h1>
+            <div id="enemy-board" class="game-board">
+    
+            </div> 
+            <div id="enemy-ship-info">
+                
+            </div>
+        </div>
+        <div class="container">
+            <h1>Your base</h1>
+            <div id="player-board" class="game-board">
+    
+            </div>
+            <div id="player-ship-info">
+
+            </div>
         </div>
     </div>
-    <script type="javascript/text" src="./bundle.js"></script>
+    <button id="start-btn">Start</button>
+    <button id="reset">Reset</button>
+    <footer>
+        <p> <span style="color: red;">X</span> means hit</p>
+        <p> . means miss</p>
+    </footer>
 </body>
 </html>

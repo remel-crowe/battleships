@@ -1,113 +1,82 @@
-const ship = require("./ship");
-
-class GameBoard {
+class Gameboard {
   constructor() {
-    this.size = 10;
-    this.board = this.createBoard(this.size);
-    this.attacks = new Set();
-    this.missed = new Set();
+    this.board = Array.from({ length: 10 }, () =>
+      Array.from({ length: 10 }, () => null)
+    );
+    this.missedAttacks = [];
+    this.ships = [];
   }
 
-  shiptypes = {
-    carrier: 5,
-    battleship: 4,
-    cruiser: 3,
-    submarine: 3,
-    destroyer: 2,
-  };
-
-  createBoard(size) {
-    const board = [];
-    for (let i = 0; i <= size; i++) {
-      board.push(Array(size).fill("."));
+  placeShip(ship, x, y, isVertical) {
+    if (!this.isValidPlacement(ship.length, x, y, isVertical)) {
+      return false; // Invalid placement
     }
-    return board;
-  }
 
-  placeship(x, y, type, orientation) {
-    let newShip = new ship(this.shiptypes[type]);
-
-    let collisionDetected = true;
-    while (collisionDetected) {
-      if (!this.checkCollision(x, y, newShip.length, orientation)) {
-        collisionDetected = false;
+    // Place the ship on the board
+    for (let i = 0; i < ship.length; i++) {
+      if (isVertical) {
+        this.board[x + i][y] = ship;
       } else {
-        // Generate new random coordinates
-        x = Math.floor(Math.random() * 10);
-        y = Math.floor(Math.random() * 10);
+        this.board[x][y + i] = ship;
       }
     }
 
-    if (orientation === "vertical") {
-      for (let i = y; i < y + newShip.length; i++) {
-        this.board[x][i] = newShip;
-      }
-    } else {
-      for (let i = x; i < x + newShip.length; i++) {
-        this.board[i][y] = newShip;
-      }
-    }
+    this.ships.push(ship); // Add the ship to the list of ships on the board
+    return true; // Successful placement
   }
 
-  checkCollision(x, y, length, orientation) {
-    if (orientation === "vertical") {
-      for (let i = y; i < y + length; i++) {
-        if (this.board[x][i] !== ".") {
-          return true; // Collision detected
-        }
+  receiveAttack(row, col) {
+    if (this.board[row][col] !== "." && this.board[row][col] !== "x") {
+      if (this.board[row][col] === null) {
+        this.board[row][col] = ".";
+        return true;
       }
-    } else {
-      for (let i = x; i < x + length; i++) {
-        if (this.board[i][y] !== ".") {
-          return true; // Collision detected
-        }
-      }
+      this.board[row][col].hit();
+      this.board[row][col] = "x";
+      return "hit";
     }
-    return false; // No collision detected
+    return false;
   }
 
-  receiveAttack(x, y) {
-    if (this.attacks.has([[x], [y]].toString())) {
-      return "Incorrect";
+  allShipsSunk() {
+    return this.ships.every((ship) => ship.isSunk());
+  }
+
+  isValidPlacement(length, x, y, isVertical) {
+    // Ensure that the ship fits within the boundaries of the board
+    if (isVertical) {
+      if (x + length > 10) {
+        return false; // Ship exceeds the board's height
+      }
     } else {
-      let target = this.board[x][y];
-      if (target instanceof ship) {
-        target.hit();
-        this.board[x][y] = "H";
-        if (target.isSunk()) {
-          console.log("sunk");
+      if (y + length > 10) {
+        return false; // Ship exceeds the board's width
+      }
+    }
+
+    // Ensure that the ship does not overlap with existing ships
+    for (let i = 0; i < length; i++) {
+      if (isVertical) {
+        if (this.board[x + i][y] !== null) {
+          return false; // Overlaps with existing ship
         }
       } else {
-        this.missed.add([[x], [y]].toString());
-        this.board[x][y] = "M";
-      }
-
-      this.attacks.add([[x], [y]].toString());
-    }
-  }
-
-  printBoard() {
-    for (let i = 0; i < this.board.length; i++) {
-      let row = "";
-      for (let j = 0; j < this.board[i].length; j++) {
-        if (this.board[i][j] instanceof ship) {
-          row += "S";
-        } else {
-          row += this.board[i][j];
+        if (this.board[x][y + i] !== null) {
+          return false; // Overlaps with existing ship
         }
-        row += " ";
       }
-      console.log(row);
     }
-  }
 
-  allSunk() {
-    if (this.board.includes("S")) {
-      return false;
+    if (isVertical) {
+      if (y > 0 && this.board[x][y - 1] !== null) return false;
+      if (y + length < 9 && this.board[x][y + length] !== null) return false;
     } else {
-      return true;
+      if (x > 0 && this.board[x - 1][y] !== null) return false;
+      if (x + length < 9 && this.board[x + length][y] !== null) return false;
     }
+
+    return true; // Valid placement
   }
 }
 
-module.exports = GameBoard;
+export default Gameboard;

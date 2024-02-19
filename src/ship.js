@@ -1,12 +1,11 @@
-class ship {
+class Ship {
   constructor(length) {
     this.length = length;
     this.hits = 0;
-    this.sunk = false;
   }
 
   hit() {
-    return (this.hits += 1);
+    this.hits++;
   }
 
   isSunk() {
@@ -14,4 +13,4 @@ class ship {
   }
 }
 
-module.exports = ship;
+export default Ship;
