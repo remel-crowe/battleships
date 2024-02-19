@@ -81,7 +81,6 @@
     "find-up": "^4.1.0",
     "flat": "^5.0.2",
     "fs.realpath": "^1.0.0",
-    "fsevents": "^2.3.3",
     "function-bind": "^1.1.2",
     "gensync": "^1.0.0-beta.2",
     "get-caller-file": "^2.0.5",
@@ -243,6 +242,10 @@
     "yargs-parser": "^21.1.1",
     "yocto-queue": "^0.1.0"
   },
+  "optionalDependencies": {
+    "fsevents": "*"
+
+  },
   "scripts": {
     "test": "jest",
     "build": "webpack --config=Scripts/config/webpack.prod.js"
@@ -250,4 +253,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC"
+
+
 }
