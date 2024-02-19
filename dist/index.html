@@ -9,17 +9,20 @@
 
     <div class="modal hide"></div>
     <h1>BATTLESHIPS</h1>
-    <div class="flex-container">
-        <div class="container">
+    <div class="help">
+        <p> <span style="color: red;">X</span> means hit</p>
+        <p>  / means miss</p>
+    </div>
+    
+    <div class="game-container">
+        <div class="board-container">
             <h1>Enemy Waters</h1>
             <div id="enemy-board" class="game-board">
-    
             </div> 
             <div id="enemy-ship-info">
-                
             </div>
         </div>
-        <div class="container">
+        <div class="board-container">
             <h1>Your base</h1>
             <div id="player-board" class="game-board">
     
@@ -29,11 +32,10 @@
             </div>
         </div>
     </div>
-    <button id="start-btn">Start</button>
-    <button id="reset">Reset</button>
-    <footer>
-        <p> <span style="color: red;">X</span> means hit</p>
-        <p> . means miss</p>
-    </footer>
+    <div class="btn">
+        <button id="start-btn">Start</button>
+        <button id="reset">Reset</button>
+    </div>
+        
 </body>
 </html>

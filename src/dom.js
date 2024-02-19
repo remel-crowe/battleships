@@ -25,8 +25,9 @@ export default () => {
     botPatrolBoat,
   ]);
 
-  opponentShipInfo(user.gameboard.ships);
-  playerShipInfo(bot.gameboard.ships);
+  renderShipInfo(user.gameboard.ships, "player");
+  // Render opponent's ship info
+  renderShipInfo(bot.gameboard.ships, "enemy");
 
   const enemyBoard = document.querySelector("#enemy-board");
   const playerBoard = document.querySelector("#player-board");
@@ -50,9 +51,9 @@ export default () => {
         if (result === "hit") {
           box.style.color = "red";
           box.textContent = "X";
-          opponentShipInfo(user.gameboard.ships);
+          renderShipInfo(user.gameboard.ships, "enemy");
         } else {
-          box.textContent = ".";
+          box.textContent = "/";
         }
         if (user.gameboard.allShipsSunk()) {
           modal("You won", "You destroyed opponent's ships");
@@ -72,9 +73,9 @@ export default () => {
               if (res === "hit") {
                 element.style.color = "red";
                 element.textContent = "X";
-                playerShipInfo(bot.gameboard.ships);
+                renderShipInfo(bot.gameboard.ships, "player");
               } else {
-                element.textContent = ".";
+                element.textContent = "/";
               }
               if (bot.gameboard.allShipsSunk()) {
                 modal("You lost", "Opponent destroyed all your ships");
@@ -133,42 +134,26 @@ const modal = (winner, sub) => {
   }, 3000);
 };
 
-const opponentShipInfo = (ships) => {
-  const wrapper = document.querySelector("#enemy-ship-info");
+const renderShipInfo = (ships, player) => {
+  const wrapper = document.querySelector(`#${player}-ship-info`);
   wrapper.innerHTML = "";
-  ships.forEach((ship) => {
-    const shipWrapper = document.createElement("div");
-    let colored = 0;
-    for (let i = 0; i < ship.length; i++) {
-      const div = document.createElement("div");
-      div.classList.add("ships");
-      if (colored < ship.hits) {
-        div.style.backgroundColor = "black";
-        div.style.border = "0.2px solid grey";
-        colored++;
-      }
-      shipWrapper.appendChild(div);
-    }
-    wrapper.appendChild(shipWrapper);
-  });
-};
 
-const playerShipInfo = (ships) => {
-  const wrapper = document.querySelector("#player-ship-info");
-  wrapper.innerHTML = "";
   ships.forEach((ship) => {
     const shipWrapper = document.createElement("div");
     let colored = 0;
+
     for (let i = 0; i < ship.length; i++) {
       const div = document.createElement("div");
       div.classList.add("ships");
+
       if (colored < ship.hits) {
-        div.style.backgroundColor = "black";
-        div.style.border = "0.2px solid grey";
+        div.style.backgroundColor = "green";
         colored++;
       }
+
       shipWrapper.appendChild(div);
     }
+
     wrapper.appendChild(shipWrapper);
   });
 };
